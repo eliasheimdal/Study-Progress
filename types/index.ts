@@ -22,3 +22,8 @@ export type Lecture = {
   time: string;
   durationHours: number;
 }
+
+export type Activity = {
+  course: string;
+  duration: string;
+}

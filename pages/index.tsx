@@ -11,6 +11,8 @@ import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import ProgressBar from "@/components/progress";
 import SliderLoad from "@/components/slider";
+import ActivityForm from "@/components/activityForm";
+
 import lectures from "@/data/lectures.json";
 import { Lecture } from "@/types";
 
@@ -23,8 +25,6 @@ export default function IndexPage() {
   const [MlProg, setMlProg] = React.useState(0);
   const [load, setLoad] = React.useState(100);
   const fulltime = 100;
-
-
 
   const updateProgress = (time: number, lecture: string) => {
     if (lecture === "TDT4242") {
@@ -61,6 +61,7 @@ export default function IndexPage() {
   return (
     <DefaultLayout>
       <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+        <ActivityForm />
         <CheckboxGroup label="Select Attended Lectures">
           {lectures.map((lecture) => (
             <Checkbox
