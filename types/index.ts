@@ -13,6 +13,8 @@ export type SliderLoadProps = {
 export type ProgressBarProps = {
   name: string;
   value: number;
+  effort: number;
+  full: number;
 }
 
 export type Lecture = {
