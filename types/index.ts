@@ -21,9 +21,15 @@ export type Lecture = {
   day: string;
   time: string;
   durationHours: number;
+  checked: boolean;
 }
 
 export type Activity = {
   course: string;
   duration: string;
 }
+export type ActivityFormProps = {
+  activities: Activity[];
+  setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
+  onActivitySubmit: (activity: Activity) => void;
+};

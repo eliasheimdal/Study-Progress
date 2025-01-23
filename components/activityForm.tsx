@@ -1,16 +1,14 @@
 import React from "react";
 import { Form, Button, Select, SelectItem } from "@heroui/react";
-import { Activity } from "@/types";
+import { Activity, ActivityFormProps } from "@/types";
 import { title, subtitle } from "@/components/primitives";
 
-export default function ActivityForm() {
+
+
+export default function ActivityForm({ activities, setActivities, onActivitySubmit }: ActivityFormProps) {
   const [course, setCourse] = React.useState<Set<string>>(new Set([]));
   const [duration, setDuration] = React.useState("");
-  const [activities, setActivities] = React.useState<Activity[]>([]); // Use state for activities
 
-
-
-  let activity: Activity[] = [];
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.name === "duration") {
@@ -32,6 +30,7 @@ export default function ActivityForm() {
     const newActivity = { course: Array.from(course).join(", "), duration: duration };
     console.log("Submitted:", newActivity);
     setActivities((prevActivities) => [...prevActivities, newActivity]);
+    onActivitySubmit(newActivity);
   };
 
   const reset = () => {
