@@ -5,7 +5,7 @@ import { title, subtitle } from "@/components/primitives";
 
 
 
-export default function ActivityForm({ activities, setActivities, onActivitySubmit }: ActivityFormProps) {
+export default function ActivityForm({ activities, setActivities, onActivitySubmit, deleteCourse }: ActivityFormProps) {
   const [course, setCourse] = React.useState<Set<string>>(new Set([]));
   const [duration, setDuration] = React.useState("");
 
@@ -33,11 +33,12 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
     onActivitySubmit(newActivity);
   };
 
-  const reset = () => {
-    setCourse(new Set([]));
-    setDuration("");
-    setActivities([]); // Reset the activities
-  }
+  const deleteActivity = (index: number) => () => {
+    const activity = activities[index]; // Get the activity to be deleted
+    if (activity) {
+      deleteCourse(activity, index); // Call the parent-provided delete function
+    }
+  };
 
   return (
     <div className="w-full max-w-xs flex flex-col gap-4">
@@ -59,7 +60,7 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
         label="Select Duration"
         labelPlacement="outside"
         name="duration"
-        selectedKeys={duration}
+        selectedKeys={duration ? [duration] : []}
         placeholder="Duration"
         onChange={handleSelectionChange}
       >
@@ -73,16 +74,13 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
         <Button color="primary" type="submit" onPress={handleSubmit}>
           Submit
         </Button>
-        <Button type="reset" variant="flat" onPress={reset}>
-          Reset
-        </Button>
       </div>
       <div className="w-full max-w-xs flex flex-col gap-2">
       <h2 className={subtitle()}>Extra Activities:</h2>
       <ul>
       {activities.map((activity, index) => (
           <li key={index}>
-            {activity.course} - {activity.duration} Hours
+           <Button isIconOnly variant="ghost" radius="sm" color="danger" size="sm" onPress={deleteActivity(index)}>X</Button> {activity.course} - {activity.duration} Hours
           </li>
         ))}
       </ul>

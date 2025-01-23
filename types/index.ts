@@ -34,4 +34,5 @@ export type ActivityFormProps = {
   activities: Activity[];
   setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
   onActivitySubmit: (activity: Activity) => void;
+  deleteCourse: (activity: Activity, index: number) => void;
 };

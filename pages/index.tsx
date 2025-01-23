@@ -32,6 +32,7 @@ export default function IndexPage() {
   const [activities, setActivities] = React.useState<Activity[]>([]);
   const [workload, setWorkload] = React.useState(9.375);
   const [selected, setSelected] = React.useState<string[]>([]);
+  const [course, setCourse] = React.useState("");
 
   const updateProgress = (time: number, lecture: string) => {
     if (lecture === "TDT4242") {
@@ -59,12 +60,10 @@ export default function IndexPage() {
     checklist[index].checked = isChecked
     setChecklist([...checklist]);
     const additionalHours = isChecked ? duration : -duration;
-    console.log("Additional hours:", additionalHours);
-    console.log("Lecture:", isChecked);
     updateProgress(additionalHours, lecture);
   };
 
-  const handleReset = (lectures: Lecture[]) => {
+  const handleReset = () => {
     setSelected([]);
     setTdt4242Prog(0);
     setTdt4240Prog(0);
@@ -73,18 +72,43 @@ export default function IndexPage() {
     setTdt4240(0);
     setMl(0);
     setActivities([]);
-    console.log("Lectures:", lectures);
   };
 
   const handleActivitySubmit = (activity: Activity) => {
     const duration = parseInt(activity.duration, 10);
     updateProgress(duration, activity.course);
+    setCourse(activity.course);
   };
 
  const handleSlide = (value: number) => {
     const newWorkload = (value / 100) * 9.375;
     setWorkload(newWorkload);
   };
+
+  const handleActivityDelete = (activity: Activity, index: number) => {
+    // Deduct the activity duration from the relevant progress
+    const duration = parseInt(activity.duration, 10);
+    const course = activity.course;
+  
+    if (course === "TDT4242") {
+      const updatedTdt4242 = tdt4242 - duration;
+      const tdt4242Prog = (updatedTdt4242 / workload) * 100;
+      setTdt4242(updatedTdt4242);
+      setTdt4242Prog(tdt4242Prog);
+    } else if (course === "TDT4240") {
+      const updatedTdt4240 = tdt4240 - duration;
+      const tdt4240Prog = (updatedTdt4240 / workload) * 100;
+      setTdt4240(updatedTdt4240);
+      setTdt4240Prog(tdt4240Prog);
+    } else if (course === "Machine Learning") {
+      setMl((prev) => prev - duration);
+      setMlProg((prevProg) => ((prevProg - duration) / workload) * 100);
+    }
+  
+    // Remove the activity from the activities list
+    setActivities((prev) => prev.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
     console.log(checklist);
   }, [checklist]);
@@ -111,7 +135,7 @@ export default function IndexPage() {
           ))}
         </CheckboxGroup>
 
-        <ActivityForm activities={activities} setActivities={setActivities} onActivitySubmit={handleActivitySubmit} />
+        <ActivityForm activities={activities} setActivities={setActivities} onActivitySubmit={handleActivitySubmit} deleteCourse={handleActivityDelete}/>
 
         <span className={title({ color: "yellow" })}>Workload</span>
         <SliderLoad
@@ -123,7 +147,7 @@ export default function IndexPage() {
         <div className="flex gap-3">
           <Button
             className={buttonStyles({ color: "danger", radius: "full" })}
-            onPress={() => handleReset(lectures)}
+            onPress={handleReset}
           >
             Reset
           </Button>
