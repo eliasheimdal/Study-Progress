@@ -13,11 +13,9 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.name === "duration") {
       setDuration(e.target.value);
-      console.log("Selected duration:", e.target.value);
       return;
     } else if (e.target.name === "course") {
       setCourse(new Set(e.target.value.split(",")));
-      console.log("Selected course:", e.target.value);
       return;
     }
   };
@@ -28,7 +26,6 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
       return;
     }
     const newActivity = { course: Array.from(course).join(", "), duration: duration };
-    console.log("Submitted:", newActivity);
     setActivities((prevActivities) => [...prevActivities, newActivity]);
     onActivitySubmit(newActivity);
   };
@@ -76,7 +73,7 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
         </Button>
       </div>
       <div className="w-full max-w-xs flex flex-col gap-2">
-      <h2 className={subtitle()}>Extra Activities:</h2>
+      <h2 className={`${subtitle()} text-center`}>Extra Activities:</h2>
       <ul>
       {activities.map((activity, index) => (
           <li key={index}>

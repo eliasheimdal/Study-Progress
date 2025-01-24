@@ -55,9 +55,14 @@ export default function IndexPage() {
     }
   };
 
-  const handleCheckboxChange = (id: number, lecture: string, duration: number, isChecked: boolean) => {
+  const handleCheckboxChange = (
+    id: number,
+    lecture: string,
+    duration: number,
+    isChecked: boolean
+  ) => {
     const index = checklist.findIndex((lecture) => lecture.id === id);
-    checklist[index].checked = isChecked
+    checklist[index].checked = isChecked;
     setChecklist([...checklist]);
     const additionalHours = isChecked ? duration : -duration;
     updateProgress(additionalHours, lecture);
@@ -80,7 +85,7 @@ export default function IndexPage() {
     setCourse(activity.course);
   };
 
- const handleSlide = (value: number) => {
+  const handleSlide = (value: number) => {
     const newWorkload = (value / 100) * 9.375;
     setWorkload(newWorkload);
   };
@@ -89,7 +94,7 @@ export default function IndexPage() {
     // Deduct the activity duration from the relevant progress
     const duration = parseInt(activity.duration, 10);
     const course = activity.course;
-  
+
     if (course === "TDT4242") {
       const updatedTdt4242 = tdt4242 - duration;
       const tdt4242Prog = (updatedTdt4242 / workload) * 100;
@@ -104,30 +109,51 @@ export default function IndexPage() {
       setMl((prev) => prev - duration);
       setMlProg((prevProg) => ((prevProg - duration) / workload) * 100);
     }
-  
+
     // Remove the activity from the activities list
     setActivities((prev) => prev.filter((_, i) => i !== index));
   };
 
-  useEffect(() => {
-    console.log(checklist);
-  }, [checklist]);
   return (
     <DefaultLayout>
       <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <span className={title({ color: "violet" })}>Courses</span>
-        <ProgressBar name="TDT4242 Avansert Programvareutvikling" value={tdt4242Prog} effort={tdt4242} full={workload}/>
-        <ProgressBar name="TDT4240 Programvarearkitektur" value={tdt4240Prog} effort={tdt4240} full={workload} />
-        <ProgressBar name="Machine Learning" value={mlProg} effort={ml} full={workload}/>
+        <ProgressBar
+          name="TDT4242 Avansert Programvareutvikling"
+          value={tdt4242Prog}
+          effort={tdt4242}
+          full={workload}
+        />
+        <ProgressBar
+          name="TDT4240 Programvarearkitektur"
+          value={tdt4240Prog}
+          effort={tdt4240}
+          full={workload}
+        />
+        <ProgressBar
+          name="Machine Learning"
+          value={mlProg}
+          effort={ml}
+          full={workload}
+        />
 
-        <CheckboxGroup label="Select Attended Lectures" value={selected} onValueChange={setSelected}>
+        <CheckboxGroup
+          label="Select Attended Lectures"
+          value={selected}
+          onValueChange={setSelected}
+        >
           {checklist.map((lecture) => (
             <Checkbox
               key={lecture.id}
               value={lecture.id.toString()}
               onChange={(e) => {
                 const isChecked = e.target.checked;
-                handleCheckboxChange(lecture.id, lecture.courseCode, lecture.durationHours, isChecked);
+                handleCheckboxChange(
+                  lecture.id,
+                  lecture.courseCode,
+                  lecture.durationHours,
+                  isChecked
+                );
               }}
             >
               {`${lecture.courseCode} - ${lecture.type} (${lecture.day} ${lecture.time})`}
@@ -135,9 +161,13 @@ export default function IndexPage() {
           ))}
         </CheckboxGroup>
 
-        <ActivityForm activities={activities} setActivities={setActivities} onActivitySubmit={handleActivitySubmit} deleteCourse={handleActivityDelete}/>
-
-        <span className={title({ color: "yellow" })}>Workload</span>
+        <ActivityForm
+          activities={activities}
+          setActivities={setActivities}
+          onActivitySubmit={handleActivitySubmit}
+          deleteCourse={handleActivityDelete}
+        />
+        <h2 className={`${subtitle()} text-center`}>Workload</h2>
         <SliderLoad
           onChange={(value: number) => handleSlide(value)}
           name="Prosent Student"
