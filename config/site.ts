@@ -1,4 +1,5 @@
 export type SiteConfig = typeof siteConfig;
+import courses from "@/data/courses.json";
 
 export const siteConfig = {
   name: "Next.js + HeroUI",
@@ -58,6 +59,12 @@ export const siteConfig = {
       label: "Logout",
       href: "/logout",
     },
+  ],
+  courseItems: [
+    courses.map((course) => ({
+      label: course.name,
+      href: `/courses/${course.id}`,
+    })),
   ],
   links: {
     github: "https://github.com/frontio-ai/heroui",

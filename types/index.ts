@@ -36,3 +36,10 @@ export type ActivityFormProps = {
   onActivitySubmit: (activity: Activity) => void;
   deleteCourse: (activity: Activity, index: number) => void;
 };
+export type CoursePageProps = {
+  id: number,
+  courseCode: string,
+  name: string,
+  description: string,
+  src: string,
+};

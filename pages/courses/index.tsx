@@ -2,6 +2,7 @@ import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 import ProgressCard from "@/components/progressCard";
 
+
 export default function DocsPage() {
   return (
     <DefaultLayout>

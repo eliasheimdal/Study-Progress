@@ -28,7 +28,7 @@ import {
 } from "@/components/icons";
 
 export const Navbar = () => {
-  const [brandName, setBrandName] = useState("ACME");
+  const [brandName, setBrandName] = useState("StudyPlanner");
 
   useEffect(() => {
     setBrandName("StudyPlanner");
