@@ -27,9 +27,9 @@ export default function CoursePage({ course }: { course: CoursePageProps }) {
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
           <h1 className={title({color: "yellow"})}>{course.name}</h1>
-          <p>{course.description}</p>
         </div>
       </section>
+      <p className="text-center">{course.description}</p>
     </DefaultLayout>
   );
 }
