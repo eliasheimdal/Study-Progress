@@ -117,7 +117,7 @@ export default function IndexPage() {
   return (
     <DefaultLayout>
       <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <span className={title({ color: "violet" })}>Courses</span>
+        <h1 className={`${title({ color: "blue" })} pb-2`}>Progress</h1>
         <ProgressBar
           name="TDT4242 Avansert Programvareutvikling"
           value={tdt4242Prog}
