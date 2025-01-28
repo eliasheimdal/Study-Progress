@@ -20,33 +20,33 @@
                 "id": 3,
                 "name": "Excercise 3",
                 "Deadline": "2025-02-10",
-                "link": "Excercise_3-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             }
         ]
     },
     {
-        "course": "TDT4245",
+        "course": "IT3010",
         "content" : [
             {
                 "id": 1,
                 "name": "Excercise 1",
                 "Deadline": "2025-01-27",
-                "link": "Excercise_1-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             },
             {
                 "id": 2,
                 "name": "Excercise 2",
                 "Deadline": "2025-02-03",
-                "link": "Excercise_2-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             },
             {
                 "id": 3,
                 "name": "Excercise 3",
                 "Deadline": "2025-02-10",
-                "link": "Excercise_3-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             }
         ]
@@ -58,21 +58,21 @@
                 "id": 1,
                 "name": "Excercise 1",
                 "Deadline": "2025-01-27",
-                "link": "Excercise_1-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             },
             {
                 "id": 2,
                 "name": "Excercise 2",
                 "Deadline": "2025-02-03",
-                "link": "Excercise_2-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             },
             {
                 "id": 3,
                 "name": "Excercise 3",
                 "Deadline": "2025-02-10",
-                "link": "Excercise_3-Technology_Introduction.pdf",
+                "link": "",
                 "done": false
             }
         ]

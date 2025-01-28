@@ -1,44 +1,40 @@
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-} from "@heroui/react";
-import excersices from "@/data/excersices.json";
-import { useState } from "react";
-import { subtitle } from "@/components/primitives";
-
-export default function ExcersiceCard() {
-  const [completed, setCompleted] = useState<{ [key: string]: boolean }>({});
-
-  const handlePress = (courseIndex: string, contentId: number): void => {
-    setCompleted((prev) => ({
-      ...prev,
-      [`${courseIndex}-${contentId}`]: !prev[`${courseIndex}-${contentId}`],
-    }));
-  };
-
-  return (
-    <div>
-      <div className="flex justify-around text-center mb-6">
-        {excersices.map((excersice, index) => (
-          <h2 key={index} className={subtitle()}>
-            {excersice.course}
-          </h2>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t-1 border-zinc-100/50">
-        {excersices.map((excersice, courseIndex) => (
-          <div key={courseIndex} className="max-w-[400px]">
-            {excersice.content.map((content) => (
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Divider,
+    Link,
+    Image,
+  } from "@heroui/react";
+  import excersices from "@/data/excersices.json";
+  import { useState } from "react";
+  
+  export default function CourseExersices({ code }: { code: string }) {
+    const [completed, setCompleted] = useState<{ [key: string]: boolean }>({});
+  
+    // Filter exercises for the specific course
+    const filteredExercises = excersices.filter(
+      (excersice) => excersice.course === code
+    );
+  
+    const handlePress = (courseIndex: string, contentId: number): void => {
+      setCompleted((prev) => ({
+        ...prev,
+        [`${courseIndex}-${contentId}`]: !prev[`${courseIndex}-${contentId}`],
+      }));
+    };
+  
+    return (
+      <div>
+        <div className="flex flex-wrap gap-2">
+          {filteredExercises.map((excersice, courseIndex) =>
+            excersice.content.map((content) => (
               <Card
                 key={content.id}
                 isPressable
                 isHoverable={!completed[`${courseIndex}-${content.id}`]}
-                className={`max-w-[400px] mt-4 border-1 shadow-lg transition duration-300 ${
+                className={`w-[400px] border-1 shadow-lg transition duration-300 ${
                   completed[`${courseIndex}-${content.id}`]
                     ? "bg-green-100"
                     : ""
@@ -66,7 +62,7 @@ export default function ExcersiceCard() {
                 </CardBody>
                 <Divider />
                 <CardFooter>
-                  {content.link ? (
+                {content.link ? (
                     <Link isExternal showAnchorIcon href={content.link}>
                       Excersice Description
                     </Link>
@@ -75,10 +71,10 @@ export default function ExcersiceCard() {
                   )}
                 </CardFooter>
               </Card>
-            ))}
-          </div>
-        ))}
+            ))
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+  
