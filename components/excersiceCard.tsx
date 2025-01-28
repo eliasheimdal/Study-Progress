@@ -8,12 +8,21 @@ import {
   Image,
 } from "@heroui/react";
 import excersices from "@/data/excersices.json";
-import { title, subtitle } from "@/components/primitives";
+import { useState } from "react";
+import { subtitle } from "@/components/primitives";
 
 export default function ExcersiceCard() {
+  const [completed, setCompleted] = useState<{ [key: string]: boolean }>({});
+
+  const handlePress = (courseIndex: string, contentId: number): void => {
+    setCompleted((prev) => ({
+      ...prev,
+      [`${courseIndex}-${contentId}`]: !prev[`${courseIndex}-${contentId}`],
+    }));
+  };
+
   return (
     <div>
-      {/* Flex container for course titles */}
       <div className="flex justify-around text-center mb-6">
         {excersices.map((excersice, index) => (
           <h2 key={index} className={subtitle()}>
@@ -21,13 +30,21 @@ export default function ExcersiceCard() {
           </h2>
         ))}
       </div>
-
-      {/* Grid container for the content */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t-1 border-zinc-100/50">
-        {excersices.map((excersice, index) => (
-          <div key={index} className="max-w-[400px]">
+        {excersices.map((excersice, courseIndex) => (
+          <div key={courseIndex} className="max-w-[400px]">
             {excersice.content.map((content) => (
-              <Card key={content.id} className="max-w-[400px] mt-4 border-1 shadow-lg">
+              <Card
+                key={content.id}
+                isPressable
+                isHoverable
+                className={`max-w-[400px] mt-4 border-1 shadow-lg transition duration-300 ${
+                  completed[`${courseIndex}-${content.id}`]
+                    ? "bg-green-100"
+                    : ""
+                }`}
+                onPress={() => handlePress(String(courseIndex), content.id)}
+              >
                 <CardHeader className="flex gap-3">
                   <Image
                     alt="heroui logo"
@@ -37,8 +54,8 @@ export default function ExcersiceCard() {
                     width={30}
                   />
                   <div className="flex flex-col">
-                    <p className="text-md">{content.name}</p>
-                    <p className="text-small text-default-500">blackboard.no</p>
+                    <p className="text-md text-left">{content.name}</p>
+                    <p className="text-small text-default-500 text-left">blackboard.no</p>
                   </div>
                 </CardHeader>
                 <Divider />

@@ -4,14 +4,14 @@
         "content" : [
             {
                 "id": 1,
-                "name": "Excercise 1",
+                "name": "Excercise 1: Technology Introduction",
                 "Deadline": "2025-01-27",
                 "link": "/excersice_desc/Exercise_1-Technology_Introduction.pdf",
                 "done": false
             },
             {
                 "id": 2,
-                "name": "Excercise 2",
+                "name": "Excercise 2: Patterns",
                 "Deadline": "2025-02-03",
                 "link": "Excercise_2-Technology_Introduction.pdf",
                 "done": false
