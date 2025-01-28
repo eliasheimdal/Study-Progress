@@ -1,8 +1,6 @@
 import { Card, CardHeader, CardFooter, Image, Button } from "@heroui/react";
 import courses from "@/data/courses.json";
 import NextLink from "next/link";
-import clsx from "clsx";
-import { link as linkStyles } from "@heroui/theme";
 
 export default function ProgressCard() {
   return (
