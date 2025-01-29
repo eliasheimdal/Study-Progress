@@ -8,17 +8,28 @@ import {
   Image,
 } from "@heroui/react";
 import excersices from "@/data/excersices.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { subtitle } from "@/components/primitives";
 
 export default function ExcersiceCard() {
   const [completed, setCompleted] = useState<{ [key: string]: boolean }>({});
 
+  useEffect(() => {
+    const storedCompleted = localStorage.getItem("completedExercises");
+    if (storedCompleted) {
+      setCompleted(JSON.parse(storedCompleted));
+    }
+  }, []);
+
   const handlePress = (courseIndex: string, contentId: number): void => {
-    setCompleted((prev) => ({
-      ...prev,
-      [`${courseIndex}-${contentId}`]: !prev[`${courseIndex}-${contentId}`],
-    }));
+    setCompleted((prev) => {
+      const newState = {
+        ...prev,
+        [contentId]: !prev[contentId],
+      };
+      localStorage.setItem("completedExercises", JSON.stringify(newState)); // Save immediately
+      return newState;
+    });
   };
 
   return (
@@ -37,9 +48,9 @@ export default function ExcersiceCard() {
               <Card
                 key={content.id}
                 isPressable
-                isHoverable={!completed[`${courseIndex}-${content.id}`]}
+                isHoverable={!completed[content.id]}
                 className={`max-w-[400px] mt-4 border-1 shadow-lg transition duration-300 ${
-                  completed[`${courseIndex}-${content.id}`]
+                  completed[content.id]
                     ? "bg-green-100"
                     : ""
                 }`}

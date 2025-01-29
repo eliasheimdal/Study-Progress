@@ -8,10 +8,17 @@ import {
     Image,
   } from "@heroui/react";
   import excersices from "@/data/excersices.json";
-  import { useState } from "react";
+  import { useState, useEffect } from "react";
   
   export default function CourseExersices({ code }: { code: string }) {
     const [completed, setCompleted] = useState<{ [key: string]: boolean }>({});
+
+      useEffect(() => {
+        const storedCompleted = localStorage.getItem("completedExercises");
+        if (storedCompleted) {
+          setCompleted(JSON.parse(storedCompleted));
+        }
+      }, []);
   
     // Filter exercises for the specific course
     const filteredExercises = excersices.filter(
@@ -19,12 +26,16 @@ import {
     );
   
     const handlePress = (courseIndex: string, contentId: number): void => {
-      setCompleted((prev) => ({
-        ...prev,
-        [`${courseIndex}-${contentId}`]: !prev[`${courseIndex}-${contentId}`],
-      }));
-    };
-  
+        setCompleted((prev) => {
+          const newState = {
+            ...prev,
+            [contentId]: !prev[contentId],
+          };
+          localStorage.setItem("completedExercises", JSON.stringify(newState)); // Save immediately
+          return newState;
+        });
+      };
+    
     return (
       <div>
         <div className="flex flex-wrap gap-2">
@@ -33,9 +44,9 @@ import {
               <Card
                 key={content.id}
                 isPressable
-                isHoverable={!completed[`${courseIndex}-${content.id}`]}
+                isHoverable={!completed[content.id]}
                 className={`w-[400px] border-1 shadow-lg transition duration-300 ${
-                  completed[`${courseIndex}-${content.id}`]
+                  completed[content.id]
                     ? "bg-green-100"
                     : ""
                 }`}
