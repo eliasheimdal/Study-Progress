@@ -1,6 +1,6 @@
-# 📚 Course Progress Tracker
+# 📚 Course Progress Tracker (Work in Progress)
 
-A web application for tracking student progress in various courses using Heroui components, Tailwind CSS, and Next.js. The app dynamically updates progress bars, allows lecture and activity tracking, and supports dark mode.
+A web application for tracking student progress in various courses using Heroui components, Tailwind CSS, and Next.js. The app dynamically updates progress bars, allows lecture and activity tracking, and supports dark mode. The purpose is to fulfill expected work hours in different subjects per week. 
 
 ## 🚀 Features
 - 📊 **Progress Tracking** – View progress bars for each course dynamically loaded from `courses.json`.
@@ -15,8 +15,8 @@ A web application for tracking student progress in various courses using Heroui 
 
 ### **1️⃣ Clone the Repository**
 ```sh
-$ git clone https://github.com/your-username/course-progress-tracker.git
-$ cd course-progress-tracker
+$ git clone git@github.com:eliasheimdal/Study-Progress.git
+$ cd Study-Progress
 ```
 
 ### **2️⃣ Install Dependencies**
@@ -38,31 +38,37 @@ $ npm run dev  # or yarn dev
 📦 course-progress-tracker
 ├── 📂 components  # Reusable UI Components
 │   ├── 📄 ActivityForm.tsx
-│   ├── 📄 ExcersiceCard.tsx
-│   ├── 📄 LectureTracker.tsx
-│   ├── 📄 Progress.tsx
-│   ├── 📄 SliderLoad.tsx
-│   └── 📄 ThemeSwitch.tsx
+│   ├── 📄 courseExcersices.tsx
+│   ├── 📄 coursesCard.tsx
+│   ├── 📄 excersiceCard.tsx
+│   ├── 📄 icons.tsx
+│   ├── 📄 lectureTracker.tsx
+│   ├── 📄 navbar.tsx
+│   ├── 📄 progress.tsx
+│   ├── 📄 slider.tsx
+│   └── 📄 theme-switch.tsx
 ├── 📂 data  # Static Data Files
 │   ├── 📄 courses.json
 │   ├── 📄 lectures.json
 │   └── 📄 excersices.json
-├── 📂 layouts  # Page Layouts
-├── 📂 pages  # Application Routes
-│   ├── 📄 index.tsx  # Home Page
-│   ├── 📄 courses.tsx  # Course Listings
-│   ├── 📄 [id].tsx  # Dynamic Course Pages
-│   └── 📄 _app.tsx  # Global App Config
-├── 📂 styles  # Global Styles
-├── 📄 tailwind.config.js  # Tailwind Configuration
-├── 📄 next.config.js  # Next.js Configuration
-└── 📄 README.md  # Project Documentation
+├── 📂 layouts
+├── 📂 pages  
+│   ├── 📄 index.tsx
+│   ├── 📂 courses 
+│   │   └── 📂 [id]
+│   ├── 📂 excersices
+│   └── 📄 _app.tsx  
+├── 📂 styles  
+├── 📄 tailwind.config.js
+├── 📄 next.config.js
+└── 📄 README.md  
 ```
 
 ---
 
 ## 📘 Usage Guide
 ### **📊 Tracking Course Progress**
+(Assuming JSON files are updated to your specifications)
 1. Select **attended lectures** using the checkboxes.
 2. View the **progress bars** update dynamically.
 3. Log extra study **activities** manually.
@@ -82,22 +88,4 @@ $ npm run dev  # or yarn dev
 - **Dark Mode:** `next-themes`
 
 ---
-
-## 🐞 Troubleshooting
-### **1️⃣ Dark Mode Styles Not Applying?**
-- Ensure `<html class='dark'>` is toggled properly.
-- Force dark mode class: `document.documentElement.classList.toggle("dark", theme === "dark")`.
-
-### **2️⃣ Tailwind `dark:` Classes Not Working?**
-- Run: `npx tailwindcss -o output.css` and check if `dark:bg-green-700` is present.
-- Rebuild: `rm -rf .next && npm run dev`.
-
-### **3️⃣ LocalStorage Not Persisting Progress?**
-- Check browser console: `localStorage.getItem("completedExercises")`.
-- Ensure `useEffect` is properly loading saved state.
-
----
-
-## 📜 License
-MIT License © 2025 Your Name
 
