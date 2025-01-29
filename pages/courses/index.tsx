@@ -1,9 +1,9 @@
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
-import ProgressCard from "@/components/progressCard";
+import CoursesCard from "@/components/coursesCard";
 
 
-export default function DocsPage() {
+export default function CoursesPage() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -13,7 +13,7 @@ export default function DocsPage() {
         </div>
       </section>
       <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <ProgressCard />
+      <CoursesCard />
       </div>
     </DefaultLayout>
   );

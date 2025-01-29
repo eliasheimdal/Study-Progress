@@ -51,7 +51,7 @@ export default function ExcersiceCard() {
                 isHoverable={!completed[content.id]}
                 className={`max-w-[400px] mt-4 border-1 shadow-lg transition duration-300 ${
                   completed[content.id]
-                    ? "bg-green-100"
+                    ? "bg-green-500 text-black"
                     : ""
                 }`}
                 onPress={() => handlePress(String(courseIndex), content.id)}

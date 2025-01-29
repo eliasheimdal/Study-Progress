@@ -2,7 +2,7 @@ import { Card, CardHeader, CardFooter, Image, Button } from "@heroui/react";
 import courses from "@/data/courses.json";
 import NextLink from "next/link";
 
-export default function ProgressCard() {
+export default function CoursesCard() {
   return (
     <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
       {courses.map((course) => (

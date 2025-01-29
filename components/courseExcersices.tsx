@@ -47,7 +47,7 @@ import {
                 isHoverable={!completed[content.id]}
                 className={`w-[400px] border-1 shadow-lg transition duration-300 ${
                   completed[content.id]
-                    ? "bg-green-100"
+                    ? "bg-green-500 text-black"
                     : ""
                 }`}
                 onPress={() => handlePress(String(courseIndex), content.id)}
