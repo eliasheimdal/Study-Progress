@@ -3,13 +3,16 @@ import { Checkbox, CheckboxGroup, Button } from "@heroui/react";
 import ProgressBar from "@/components/progress";
 import SliderLoad from "@/components/slider";
 import ActivityForm from "@/components/activityForm";
+import LoginForm from "@/components/loginForm";
 import lectures from "@/data/lectures.json";
 import courses from "@/data/courses.json";
 import { title, subtitle } from "@/components/primitives";
 import { button as buttonStyles } from "@heroui/theme";
 import { Activity } from "@/types";
+import { useSession } from "next-auth/react";
 
 export default function LectureTracker() {
+  const { data: session } = useSession();
   const [checklist, setChecklist] = useState(
     lectures.map((lecture) => ({
       ...lecture,
@@ -90,59 +93,73 @@ export default function LectureTracker() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <h1 className={`${title({ color: "blue" })} pb-2`}>Progress</h1>
+      <LoginForm />
+      {session ? (
+        <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+          <h1 className={`${title({ color: "blue" })} pb-2`}>Progress</h1>
 
-      {courses.map((course) => (
-        <ProgressBar
-          key={course.courseCode}
-          name={course.name}
-          value={progressPercent[course.courseCode]}
-          effort={progress[course.courseCode]}
-          full={workload}
-        />
-      ))}
+          {courses.map((course) => (
+            <ProgressBar
+              key={course.courseCode}
+              name={course.name}
+              code={course.courseCode}
+              value={progressPercent[course.courseCode]}
+              effort={progress[course.courseCode]}
+              full={workload}
+            />
+          ))}
 
-      <CheckboxGroup
-        label="Select Attended Lectures"
-        value={selected}
-        onValueChange={setSelected}
-      >
-        {checklist.map((lecture) => (
-          <Checkbox
-            key={lecture.id}
-            value={lecture.id.toString()}
-            onChange={(e) =>
-              handleCheckboxChange(
-                lecture.id,
-                lecture.courseCode,
-                lecture.durationHours,
-                e.target.checked
-              )
-            }
+          <CheckboxGroup
+            label="Select Attended Lectures"
+            value={selected}
+            onValueChange={setSelected}
           >
-            {`${lecture.courseCode} - ${lecture.type} (${lecture.day} ${lecture.time})`}
-          </Checkbox>
-        ))}
-      </CheckboxGroup>
+            {checklist.map((lecture) => (
+              <Checkbox
+                key={lecture.id}
+                value={lecture.id.toString()}
+                onChange={(e) =>
+                  handleCheckboxChange(
+                    lecture.id,
+                    lecture.courseCode,
+                    lecture.durationHours,
+                    e.target.checked
+                  )
+                }
+              >
+                {`${lecture.courseCode} - ${lecture.type} (${lecture.day} ${lecture.time})`}
+              </Checkbox>
+            ))}
+          </CheckboxGroup>
 
-      <ActivityForm
-        activities={activities}
-        setActivities={setActivities}
-        onActivitySubmit={handleActivitySubmit}
-        deleteCourse={handleActivityDelete}
-      />
+          <ActivityForm
+            activities={activities}
+            setActivities={setActivities}
+            onActivitySubmit={handleActivitySubmit}
+            deleteCourse={handleActivityDelete}
+          />
 
-      <h2 className={`${subtitle()} text-center`}>Workload</h2>
-      <SliderLoad onChange={handleSlide} name="Prosent Student" value={100} />
+          <h2 className={`${subtitle()} text-center`}>Workload</h2>
+          <SliderLoad
+            onChange={handleSlide}
+            name="Prosent Student"
+            value={100}
+          />
 
-      <div className="flex gap-3">
-        <Button
-          className={buttonStyles({ color: "danger", radius: "full" })}
-          onPress={handleReset}
-        >
-          Reset
-        </Button>
-      </div>
+          <div className="flex gap-3">
+            <Button
+              className={buttonStyles({ color: "danger", radius: "full" })}
+              onPress={handleReset}
+            >
+              Reset
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p>Please login to view your progress</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,10 +2,10 @@ import React from "react";
 import {Progress} from "@heroui/react";
 import {ProgressBarProps} from "@/types";
 
-export default function ProgressBar({ name, value, effort, full }: ProgressBarProps) {
+export default function ProgressBar({ name, code, value, effort, full }: ProgressBarProps) {
   return (
     <Progress
-      label={`${effort}/${full} - ${name}`}
+      label={`${effort}/${full} - ${code} ${name}`}
       aria-label="Downloading..."
       className="max-w-md"
       color="success"
