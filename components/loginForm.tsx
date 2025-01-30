@@ -2,9 +2,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import {Button} from "@heroui/react";
 import { FcGoogle } from "react-icons/fc"; // Google icon
 import { FaGithub, FaGoogle } from "react-icons/fa"; // 
+import { useTheme } from "next-themes"; // Import theme hook
+
 
 export default function LoginForm() {
   const { data: session } = useSession();
+  const { theme } = useTheme(); // Get current theme
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -23,7 +26,7 @@ export default function LoginForm() {
           <Button
             onPress={() => signIn("google")}
             color="secondary"
-            className="px-4 py-2 text-white rounded"
+            className="px-4 py-2 text-black bg-white rounded shadow-md border border-black hover:bg-gray-200"
           >
             <FcGoogle className="w-5 h-5" />
 
@@ -32,7 +35,9 @@ export default function LoginForm() {
           <Button
             onPress={() => signIn("github")}
             color="secondary"
-            className="px-4 py-2 text-white rounded"
+            className={`px-4 py-2 rounded shadow-md transition
+              ${theme === "dark" ? "bg-white text-black hover:bg-gray-200" : "bg-gray-900 text-white hover:bg-gray-800"}
+            `}
           >
             <FaGithub className="w-5 h-5" />
             Login with Github
