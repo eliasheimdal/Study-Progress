@@ -130,6 +130,7 @@ export default function LectureTracker() {
               </Checkbox>
             ))}
           </CheckboxGroup>
+          <br />
 
           <ActivityForm
             activities={activities}
