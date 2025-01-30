@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Checkbox, CheckboxGroup, Button } from "@heroui/react";
 import ProgressBar from "@/components/progress";
 import SliderLoad from "@/components/slider";
@@ -13,57 +13,72 @@ import { useSession } from "next-auth/react";
 
 export default function LectureTracker() {
   const { data: session } = useSession();
-  const [checklist, setChecklist] = useState(
-    lectures.map((lecture) => ({
-      ...lecture,
-      checked: true,
-    }))
-  );
 
-  const initialProgress: { [key: string]: number } = courses.reduce(
-    (acc, course) => ({ ...acc, [course.courseCode]: 0 }),
-    {}
-  );
-  const [progress, setProgress] = useState(initialProgress);
-  const [progressPercent, setProgressPercent] = useState(initialProgress);
-  const [activities, setActivities] = useState<Activity[]>([]);
+  
+  const loadProgress = () => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("progress") || "{}");
+    }
+    return {};
+  };
+  
+  const loadActivities = () => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("activities") || "[]");
+    }
+    return [];
+  };
+  
+  
+  const [progress, setProgress] = useState(loadProgress);
   const [workload, setWorkload] = useState(9.375);
+  
+  
+  const calculateProgressPercent = (progress: { [key: string]: number }) => {
+    return Object.keys(progress).reduce((acc, courseCode) => {
+      acc[courseCode] = (progress[courseCode] / workload) * 100;
+      return acc;
+    }, {} as { [key: string]: number });
+  };
+  
+  
+  const [progressPercent, setProgressPercent] = useState(() => calculateProgressPercent(loadProgress()));
+  const [activities, setActivities] = useState(loadActivities);
   const [selected, setSelected] = useState<string[]>([]);
 
+  
+  useEffect(() => {
+    localStorage.setItem("progress", JSON.stringify(progress));
+    localStorage.setItem("activities", JSON.stringify(activities));
+  }, [progress, activities]);
+
   const updateProgress = (time: number, courseCode: string) => {
-    setProgress((prev) => ({
+    setProgress((prev: Record<string, number>) => {
+      const updatedProgress: Record<string, number> = {
       ...prev,
-      [courseCode]: prev[courseCode] + time,
-    }));
-    checkProgress(time, courseCode);
-  };
+      [courseCode]: (prev[courseCode] || 0) + time,
+      };
 
-  const checkProgress = (time: number, courseCode: string) => {
-    setProgressPercent((prev) => ({
-      ...prev,
-      [courseCode]: ((progress[courseCode] + time) / workload) * 100,
-    }));
-  };
+      setProgressPercent((prevPercent: Record<string, number>) => ({
+      ...prevPercent,
+      [courseCode]: (updatedProgress[courseCode] / workload) * 100,
+      }));
 
-  const handleCheckboxChange = (
-    id: number,
-    courseCode: string,
-    duration: number,
-    isChecked: boolean
-  ) => {
-    const index = checklist.findIndex((lecture) => lecture.id === id);
-    checklist[index].checked = isChecked;
-    setChecklist([...checklist]);
-
-    updateProgress(isChecked ? duration : -duration, courseCode);
-  };
-
-  const handleSlide = (value: number) => {
-    setWorkload((value / 100) * 9.375);
+      return updatedProgress;
+    });
   };
 
   const handleActivitySubmit = (activity: Activity) => {
     const duration = parseInt(activity.duration, 10);
+    
+    
+    setActivities((prev: Activity[]) => {
+      if (prev.some((act: Activity) => act.course === activity.course && act.duration === activity.duration)) {
+      return prev; 
+      }
+      return [...prev, activity];
+    });
+  
     updateProgress(duration, activity.course);
   };
 
@@ -71,24 +86,30 @@ export default function LectureTracker() {
     const duration = parseInt(activity.duration, 10);
     const courseCode = activity.course;
 
-    setProgress((prev) => ({
+    setProgress((prev: Record<string, number>) => {
+      const updatedProgress = {
       ...prev,
-      [courseCode]: prev[courseCode] - duration,
-    }));
+      [courseCode]: (prev[courseCode] || 0) - duration,
+      };
 
-    setProgressPercent((prev) => ({
-      ...prev,
-      [courseCode]: ((prev[courseCode] - duration) / workload) * 100,
-    }));
+      setProgressPercent((prevPercent: Record<string, number>) => ({
+      ...prevPercent,
+      [courseCode]: (updatedProgress[courseCode] / workload) * 100,
+      }));
 
-    setActivities((prev) => prev.filter((_, i) => i !== index));
+      return updatedProgress;
+    });
+
+    setActivities((prev: Activity[]) => prev.filter((_, i: number) => i !== index));
   };
 
   const handleReset = () => {
     setSelected([]);
-    setProgress(initialProgress);
-    setProgressPercent(initialProgress);
+    setProgress({});
+    setProgressPercent({});
     setActivities([]);
+    localStorage.removeItem("progress");
+    localStorage.removeItem("activities");
   };
 
   return (
@@ -103,8 +124,8 @@ export default function LectureTracker() {
               key={course.courseCode}
               name={course.name}
               code={course.courseCode}
-              value={progressPercent[course.courseCode]}
-              effort={progress[course.courseCode]}
+              value={progressPercent[course.courseCode] || 0}
+              effort={progress[course.courseCode] || 0}
               full={workload}
             />
           ))}
@@ -114,16 +135,14 @@ export default function LectureTracker() {
             value={selected}
             onValueChange={setSelected}
           >
-            {checklist.map((lecture) => (
+            {lectures.map((lecture) => (
               <Checkbox
                 key={lecture.id}
                 value={lecture.id.toString()}
                 onChange={(e) =>
-                  handleCheckboxChange(
-                    lecture.id,
-                    lecture.courseCode,
-                    lecture.durationHours,
-                    e.target.checked
+                  updateProgress(
+                    e.target.checked ? lecture.durationHours : -lecture.durationHours,
+                    lecture.courseCode
                   )
                 }
               >
@@ -141,7 +160,7 @@ export default function LectureTracker() {
 
           <h2 className={`${subtitle()} text-center`}>Workload</h2>
           <SliderLoad
-            onChange={handleSlide}
+            onChange={(value: number) => setWorkload((value / 100) * 9.375)}
             name="Prosent Student"
             value={100}
           />

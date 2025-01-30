@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Button, Select, SelectItem } from "@heroui/react";
 import { Activity, ActivityFormProps } from "@/types";
 import { title, subtitle } from "@/components/primitives";
+import courses from "@/data/courses.json";
 
 
 
@@ -47,9 +48,12 @@ export default function ActivityForm({ activities, setActivities, onActivitySubm
         selectedKeys={course}
         placeholder="Courses"
         onChange={handleSelectionChange}      >
-        <SelectItem key="TDT4240">TDT4240</SelectItem>
+          {courses.map((course) => (
+            <SelectItem key={course.courseCode}>{course.courseCode}</SelectItem>
+          ))}
+        {/* <SelectItem key="TDT4240">TDT4240</SelectItem>
         <SelectItem key="TDT4242">TDT4242</SelectItem>
-        <SelectItem key="Machine Learning">Machine Learning</SelectItem>
+        <SelectItem key="Machine Learning">Machine Learning</SelectItem> */}
       </Select>
 
       <Select
