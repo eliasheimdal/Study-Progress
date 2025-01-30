@@ -1,5 +1,6 @@
 import { SVGProps } from "react";
 
+
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
@@ -43,3 +44,20 @@ export type CoursePageProps = {
   description: string,
   src: string,
 };
+
+declare module "next-auth" {
+  export interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  export interface JWT {
+    id: string;
+  }
+}

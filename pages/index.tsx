@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultLayout from "@/layouts/default";
 import LectureTracker from "@/components/lectureTracker";
+import LoginForm from "@/components/loginForm";
 import { motion } from "framer-motion";
 
 export default function IndexPage() {
