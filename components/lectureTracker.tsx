@@ -95,13 +95,14 @@ export default function LectureTracker() {
     <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       <LoginForm />
       {session ? (
-        <div>
+        <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <h1 className={`${title({ color: "blue" })} pb-2`}>Progress</h1>
 
           {courses.map((course) => (
             <ProgressBar
               key={course.courseCode}
               name={course.name}
+              code={course.courseCode}
               value={progressPercent[course.courseCode]}
               effort={progress[course.courseCode]}
               full={workload}
@@ -130,7 +131,6 @@ export default function LectureTracker() {
               </Checkbox>
             ))}
           </CheckboxGroup>
-          <br />
 
           <ActivityForm
             activities={activities}

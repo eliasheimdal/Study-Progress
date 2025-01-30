@@ -13,6 +13,7 @@ export type SliderLoadProps = {
 
 export type ProgressBarProps = {
   name: string;
+  code: string;
   value: number;
   effort: number;
   full: number;
